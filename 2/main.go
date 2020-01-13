@@ -40,39 +40,24 @@ func main() {
 }
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	var num1, num2 int
-	var carry int
-	res := &ListNode{Val: 0}
-	look := res
-	for (l1 != nil || l2 != nil) || carry == 1 {
+	var node *ListNode
+	var n int
+	for l1 != nil || l2 != nil || n > 0 {
 		if l1 != nil {
-			num1 = l1.Val
-		} else {
-			num1 = 0
-		}
-		if l2 != nil {
-			num2 = l2.Val
-		} else {
-			num2 = 0
-		}
-		look.Val = (num1 + num2 + carry) % 10
-		if num1+num2+carry >= 10 {
-			carry = 1
-		} else {
-			carry = 0
-		}
-		if l1 != nil {
+			n += l1.Val
 			l1 = l1.Next
 		}
 		if l2 != nil {
+			n += l2.Val
 			l2 = l2.Next
 		}
-
-		if l1 != nil || l2 != nil || carry == 1 {
-			next := &ListNode{Val: 0}
-			look.Next = next
-			look = look.Next
-		}
+		node = &ListNode{n % 10, node}
+		n /= 10
 	}
-	return res
+	var newNode *ListNode
+	for node != nil {
+		newNode = &ListNode{node.Val, newNode}
+		node = node.Next
+	}
+	return newNode
 }
